@@ -227,7 +227,7 @@
                   <limits>
                     <limit>
                       <counter>COMPLEXITY</counter>
-                      <value>COVERED-RATIO</value>
+                      <value>COVEREDRATIO</value>
                       <minimum>${coverage-ratio}</minimum>
                     </limit>
                   </limits>
