@@ -1,6 +1,6 @@
 name: Java CI
 
-# Run the CI on push and pull requests again master.
+# Run the CI on push and pull requests against master.
 on:
   push:
   pull_request:

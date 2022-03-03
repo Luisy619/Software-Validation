@@ -196,7 +196,7 @@
       </plugin>
 
       <!-- Add Jacoco and generate report on build -->
-      <!-- Also, fail the build if the line test coverage is under the minimum -->
+      <!-- Also, fail the build if the coverage ratio is under the minimum -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
