@@ -28,9 +28,9 @@ Scenario: Create an invalid pet with a duplicate name for a given owner (Error f
     | Noodle  | 2017-03-28 | Snake |
 
 Scenario Outline: Try to create an invalid pet with missing information (Error flow)
-  When a pet with name "<name>", birthdate "<birth_date>", and type "<type>" is created
+  When a pet with name "<name>", birthdate "<birth_date>", and type "<type>" is created for owner "Last"
   Then the error "<error_message>" shall be raised
-  And And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist
+  And And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist for owner "Last"
 
   Examples:
     | name    | birth_date | type  | error_message |
@@ -39,9 +39,9 @@ Scenario Outline: Try to create an invalid pet with missing information (Error f
     | Noodle  | 2017-03-28 |       | ...           |
 
 Scenario Outline: Try to create an invalid pet with an invalid birth date (Error flow)
-  When a pet with name "<name>", birthdate "<birth_date>", and type "<type>" is created
+  When a pet with name "<name>", birthdate "<birth_date>", and type "<type>" is created for owner "Last"
   Then the error "<error_message>" shall be raised
-  And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist
+  And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist for owner "Last"
 
   Examples:
     | name    | birth_date | type  | error_message |
@@ -50,6 +50,6 @@ Scenario Outline: Try to create an invalid pet with an invalid birth date (Error
     | Noodle  | 10/10/1999 | Snake | ...           |
 
 Scenario: Try to create an invalid pet with an invalid type (Error flow)
-  When a pet with name "Noodle", birthdate "2017-03-28", and type "Gecko" is created
+  When a pet with name "Noodle", birthdate "2017-03-28", and type "Gecko" is created for owner "Last"
   Then the error "..." shall be raised
-  And a pet with name "Noodle", birthdate "2017-03-28", and type "Gecko" will not exist
+  And a pet with name "Noodle", birthdate "2017-03-28", and type "Gecko" will not exist for owner "Last"
