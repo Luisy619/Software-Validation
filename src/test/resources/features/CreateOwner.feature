@@ -26,9 +26,7 @@ Scenario: Create a new valid owner with the same information as another (Alterna
 Scenario Outline: Try to create an invalid owner with missing information (Error flow)
   When an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" is created
   Then the error "<error_message>" shall be raised
-  And the following owner will exist 0 time in the system:
-    | first_name  | last_name   | address     | city | telephone  |
-    | NewFirst    | NewLast     | 123 Street  | LA   | 5554443333 |
+  And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
 
   Examples:
     | first_name  | last_name   | address     | city | telephone  | error_message |
@@ -41,9 +39,7 @@ Scenario Outline: Try to create an invalid owner with missing information (Error
 Scenario Outline: Try to create an invalid owner with an invalid phone number (Error flow)
   When an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" is created
   Then the error "<error_message>" shall be raised
-  And the following owner will exist 0 time in the system:
-    | first_name  | last_name   | address     | city | telephone  |
-    | NewFirst    | NewLast     | 123 Street  | LA   | 5554443333 |
+  And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
 
   Examples:
     | first_name  | last_name   | address     | city | telephone    | error_message |
