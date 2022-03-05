@@ -30,7 +30,7 @@ Feature: Create a pet
   Scenario Outline: Try to create an invalid pet with missing information (Error flow)
     When a pet with name "<name>", birthdate "<birth_date>", and type "<type>" is created for owner "Last"
     Then the error "<error_message>" shall be raised
-    And And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist for owner "Last"
+    And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist for owner "Last"
 
     Examples:
       | name    | birth_date | type  | error_message |
