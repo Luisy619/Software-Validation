@@ -13,15 +13,15 @@ public class ControllerTestUtilities {
 		Owner owner = new Owner();
 		owner.setId(new Random().nextInt());
 		if (lastName.isPresent())
-			owner.setLastName(lastName.get().toString());
+			owner.setLastName(lastName.get());
 		if (firstName.isPresent())
-			owner.setFirstName(firstName.get().toString());
+			owner.setFirstName(firstName.get());
 		if (address.isPresent())
-			owner.setAddress(address.get().toString());
+			owner.setAddress(address.get());
 		if (telephone.isPresent())
-			owner.setTelephone(telephone.get().toString());
+			owner.setTelephone(telephone.get());
 		if (city.isPresent())
-			owner.setCity(city.get().toString());
+			owner.setCity(city.get());
 		return owner;
 	}
 
