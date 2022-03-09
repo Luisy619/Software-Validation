@@ -5,9 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.PetClinicApplication;
-import org.springframework.test.context.ContextConfiguration;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
