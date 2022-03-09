@@ -33,10 +33,10 @@ Feature: Create a pet
     And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist for owner "Last"
 
     Examples:
-      | name    | birth_date | type  | error_message |
-      |         | 2017-03-28 | Snake | ...           |
-      | Noodle  |            | Snake | ...           |
-      | Noodle  | 2017-03-28 |       | ...           |
+      | name    | birth_date | type  | error_message      |
+      |         | 2017-03-28 | Snake | must not be empty  |
+      | Noodle  |            | Snake | must not be empty  |
+      | Noodle  | 2017-03-28 |       | must not be empty  |
 
   Scenario Outline: Try to create an invalid pet with an invalid birth date (Error flow)
     When a pet with name "<name>", birthdate "<birth_date>", and type "<type>" is created for owner "Last"
@@ -44,12 +44,12 @@ Feature: Create a pet
     And a pet with name "<name>", birthdate "<birth_date>", and type "<type>" will not exist for owner "Last"
 
     Examples:
-      | name    | birth_date | type  | error_message |
-      | Noodle  | 1000-03-28 | Snake | ...           |
-      | Noodle  | 9999-03-28 | Snake | ...           |
-      | Noodle  | 10/10/1999 | Snake | ...           |
+      | name    | birth_date | type  | error_message                                                              |
+      | Noodle  | 1000-03-28 | Snake | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
+      | Noodle  | 9999-03-28 | Snake | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
+      | Noodle  | 10/10/1999 | Snake | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
 
   Scenario: Try to create an invalid pet with an invalid type (Error flow)
     When a pet with name "Noodle", birthdate "2017-03-28", and type "Gecko" is created for owner "Last"
-    Then the error "..." shall be raised
+    Then the error "must be a valid type" shall be raised
     And a pet with name "Noodle", birthdate "2017-03-28", and type "Gecko" will not exist for owner "Last"

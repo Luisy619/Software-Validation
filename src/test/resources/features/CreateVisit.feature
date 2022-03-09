@@ -20,16 +20,16 @@ Feature: Create a visit
 
   Scenario: Try to create an invalid visit without a description for the pet of an owner (Error flow)
     When a visit with description "" and date "2022-03-10" is created for pet "Sprigs" of owner "Last"
-    Then the error "..." shall be raised
-    And no visit will exist for pet "Sprigs" of owner "Last"
+    Then the error "must not be empty" shall be raised
+    And no visit with description "A visit" and date "" will exist for pet "Sprigs" of owner "Last"
 
   Scenario Outline: Try to create an invalid visit with an invalid date for the pet of an owner (Normal flow)
     When a visit with description "<description>" and date "<date>" is created for pet "Sprigs" of owner "Last"
     Then the error "<error_message>" shall be raised
-    And no visit will exist for pet "Sprigs" of owner "Last"
+    And no visit with description "<description>" and date "<date>" will exist for pet "Sprigs" of owner "Last"
 
     Examples:
-      | description | date       | error_message |
-      | A visit     | 1000-03-28 | ...           |
-      | A visit     | 9999-03-28 | ...           |
-      | A visit     | 10/10/1999 | ...           |
+      | description | date       | error_message                                                              |
+      | A visit     | 1000-03-28 | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
+      | A visit     | 9999-03-28 | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
+      | A visit     | 10/10/1999 | Please match the required format: Enter a date in this format: YYYY-MM-DD. |

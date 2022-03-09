@@ -29,12 +29,12 @@ Feature: Create a pet owner
     And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
 
     Examples:
-      | first_name  | last_name   | address     | city | telephone  | error_message |
-      |             | NewLast     | 123 Street  | LA   | 5554443333 | ...           |
-      | NewFirst    |             | 123 Street  | LA   | 5554443333 | ...           |
-      | NewFirst    | NewLast     |             | LA   | 5554443333 | ...           |
-      | NewFirst    | NewLast     | 123 Street  |      | 5554443333 | ...           |
-      | NewFirst    | NewLast     | 123 Street  | LA   |            | ...           |
+      | first_name  | last_name   | address     | city | telephone  | error_message      |
+      |             | NewLast     | 123 Street  | LA   | 5554443333 | must not be empty  |
+      | NewFirst    |             | 123 Street  | LA   | 5554443333 | must not be empty  |
+      | NewFirst    | NewLast     |             | LA   | 5554443333 | must not be empty  |
+      | NewFirst    | NewLast     | 123 Street  |      | 5554443333 | must not be empty  |
+      | NewFirst    | NewLast     | 123 Street  | LA   |            | must not be empty  |
 
   Scenario Outline: Try to create an invalid owner with an invalid phone number (Error flow)
     When an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" is created
@@ -42,6 +42,6 @@ Feature: Create a pet owner
     And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
 
     Examples:
-      | first_name  | last_name   | address     | city | telephone    | error_message |
-      | NewFirst    | NewLast     | 123 Street  | LA   | 555444333    | ...           |
-      | NewFirst    | NewLast     | 123 Street  | LA   | 55544433333  | ...           |
+      | first_name  | last_name   | address     | city | telephone    | error_message                                                              |
+      | NewFirst    | NewLast     | 123 Street  | LA   | 555444333    | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
+      | NewFirst    | NewLast     | 123 Street  | LA   | 55544433333  | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
