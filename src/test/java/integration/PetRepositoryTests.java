@@ -24,26 +24,25 @@ class PetRepositoryTests {
 
 	@Autowired
 	PetRepository pets;
-	
+
 	@Autowired
 	OwnerRepository owners;
-	
-	
+
 	@Test
 	@Transactional
 	void findPetTypesTest() {
 		List<PetType> actual = pets.findPetTypes();
-		
+
 		assertEquals(6, actual.size());
 	}
-	
+
 	@Test
 	@Transactional
 	void findByIdTest() {
 		Pet actual = pets.findById(1);
 		assertEquals("Leo", actual.getName());
 	}
-	
+
 	@Test
 	@Transactional
 	void saveTest() {
@@ -53,21 +52,21 @@ class PetRepositoryTests {
 		LocalDate birthDate = LocalDate.of(2021, 10, 1);
 		Owner owner = owners.findById(1);
 		PetType type = new PetType();
-		
+
 		type.setId(1);
 		type.setName("Mammoth");
-		
+
 		pet.setBirthDate(birthDate);
 		pet.setId(14);
 		pet.setName("Charlie");
 		pet.setOwner(owner);
 		pet.setType(type);
-		
+
 		pets.save(pet);
 		Pet actual = pets.findById(14);
-		
+
 		assertEquals("Charlie", actual.getName());
-		
+
 	}
 
 }

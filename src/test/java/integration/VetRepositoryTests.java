@@ -20,7 +20,7 @@ class VetRepositoryTests {
 
 	@Autowired
 	VetRepository vets;
-	
+
 	@Test
 	@Transactional
 	void findAllTest() {

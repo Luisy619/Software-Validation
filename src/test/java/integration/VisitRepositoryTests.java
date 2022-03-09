@@ -17,7 +17,7 @@ import org.springframework.samples.petclinic.persistence.VisitRepository;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @SpringBootTest(classes = PetClinicApplication.class)
 class VisitRepositoryTests {
-	
+
 	@Autowired
 	VisitRepository visits;
 
@@ -26,7 +26,7 @@ class VisitRepositoryTests {
 		List<Visit> actual = visits.findByPetId(8);
 		assertEquals(2, actual.size());
 	}
-	
+
 	@Test
 	void saveTest() {
 		// Note that this test depends on findByPetId
@@ -36,7 +36,7 @@ class VisitRepositoryTests {
 		visit.setPetId(1);
 		visit.setDate(date);
 		visit.setDescription("routine check up");
-		
+
 		visits.save(visit);
 		List<Visit> actual = visits.findByPetId(1);
 		assertEquals(5, actual.get(0).getId());
