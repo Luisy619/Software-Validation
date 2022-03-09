@@ -56,6 +56,11 @@ public class stepDefinition extends AbstractStepsDefinition {
 				+ "&telephone=" + owner.get("telephone");
 	}
 
+	private String createOwnerPost(String lastName, String firstName, String address, String city, String telephone) {
+		return "http://localhost:8080/owners/new?" + "lastName=" + lastName + "&firstName=" + firstName + "&address="
+				+ address + "&city=" + city + "&telephone=" + telephone;
+	}
+
 	@Then("the following owner will exist {int} time in the system:")
 	public void theFollowingOwnerWillExistTimeInTheSystem(int count, DataTable ownerTable) throws Exception {
 		Map<String, String> owner = ownerTable.asMaps(String.class, String.class).get(0);
@@ -66,7 +71,8 @@ public class stepDefinition extends AbstractStepsDefinition {
 	@When("an owner with name {string} {string}, address {string} {string}, and telephone {string} is created")
 	public void anOwnerWithNameAddressAndTelephoneIsCreated(String firstName, String lastName, String address,
 			String city, String telephone) throws Exception {
-		assertOwnerExistNTimes(firstName, lastName, address, city, telephone, 1);
+		String createOwnerUrl = createOwnerPost(firstName, lastName, address, city, telephone);
+		post(createOwnerUrl, "");
 	}
 
 	private void assertOwnerExistNTimes(String firstName, String lastName, String address, String city,
