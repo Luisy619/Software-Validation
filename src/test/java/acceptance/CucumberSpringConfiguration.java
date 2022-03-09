@@ -1,11 +1,12 @@
 package acceptance;
 
 import io.cucumber.spring.CucumberContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.PetClinicApplication;
-import org.springframework.test.context.ContextConfiguration;
 
 @CucumberContextConfiguration
-@ContextConfiguration(classes = PetClinicApplication.class)
+@SpringBootTest(classes = { PetClinicApplication.class, CucumberRunnerTest.class },
+		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class CucumberSpringConfiguration {
 
 }
