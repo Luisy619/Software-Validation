@@ -42,6 +42,6 @@ Feature: Create a pet owner
     And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
 
     Examples:
-      | first_name  | last_name   | address     | city | telephone    | error_message                                                              |
-      | NewFirst    | NewLast     | 123 Street  | LA   | 555444333    | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
-      | NewFirst    | NewLast     | 123 Street  | LA   | 55544433333  | Please match the required format: Enter a date in this format: YYYY-MM-DD. |
+      | first_name  | last_name   | address     | city | telephone    | error_message                     |
+      | NewFirst    | NewLast     | 123 Street  | LA   | 555444333    | Please enter a valid phone number |
+      | NewFirst    | NewLast     | 123 Street  | LA   | 55544433333  | Please enter a valid phone number |
