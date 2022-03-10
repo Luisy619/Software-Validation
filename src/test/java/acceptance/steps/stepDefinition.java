@@ -230,16 +230,17 @@ public class stepDefinition extends AbstractStepsDefinition {
 
 		// Get the page of the owner.
 		get(getOwnerLast(ownerLastName));
-		assertEquals(302, getLastStatusCode());
-		String url = Objects.requireNonNull(getLastGetResponse().getHeaders().getLocation()).toString();
-		assert url != null;
-		get(url);
 		assertEquals(200, getLastStatusCode());
 
 		// Get the url to add a visit to a pet.
-		Pattern pattern = Pattern.compile("href=\"((\\d+)/pets/([\\d+])/visits/new)\">Add");
+		Pattern pattern = Pattern.compile("href=\"((\\d+)/pets/(\\d+)/visits/new)\"");
 		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
-		String createVisitUrl = "http://localhost:8080" + matcher.group(1);
+
+		if (!matcher.find()) {
+			fail();
+		}
+
+		String createVisitUrl = "http://localhost:8080/owners/" + matcher.group(1);
 		String petID = matcher.group(3);
 
 		// Get verify the pet is correct.
@@ -251,7 +252,6 @@ public class stepDefinition extends AbstractStepsDefinition {
 		String createVisitUrlWParameters = createVisitUrl + "?date=" + visitDate + "&description=" + description
 				+ "&petId" + petID;
 		post(createVisitUrlWParameters, "");
-		assertEquals(302, getLastStatusCode());
 	}
 
 	@Then("a visit with description {string} and date {string} will exist for pet {string} of owner {string}")
@@ -259,10 +259,6 @@ public class stepDefinition extends AbstractStepsDefinition {
 			String ownerLastName) throws Exception {
 		// Get the page of the owner.
 		get(getOwnerLast(ownerLastName));
-		assertEquals(302, getLastStatusCode());
-		String url = Objects.requireNonNull(getLastGetResponse().getHeaders().getLocation()).toString();
-		assert url != null;
-		get(url);
 		assertEquals(200, getLastStatusCode());
 		assertThat(getLastGetResponse().getBody(), containsString(description));
 		assertThat(getLastGetResponse().getBody(), containsString(visitDate));
@@ -274,13 +270,11 @@ public class stepDefinition extends AbstractStepsDefinition {
 			String ownerLastName) throws Exception {
 		// Get the page of the owner.
 		get(getOwnerLast(ownerLastName));
-		assertEquals(302, getLastStatusCode());
-		String url = Objects.requireNonNull(getLastGetResponse().getHeaders().getLocation()).toString();
-		assert url != null;
-		get(url);
 		assertEquals(200, getLastStatusCode());
 		assertThat(getLastGetResponse().getBody(), not(containsString(description)));
-		assertThat(getLastGetResponse().getBody(), not(containsString(visitDate)));
+		if (!visitDate.equals("")) {
+			assertThat(getLastGetResponse().getBody(), not(containsString(visitDate)));
+		}
 		assertThat(getLastGetResponse().getBody(), containsString(petName));
 	}
 
