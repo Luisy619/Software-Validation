@@ -8,7 +8,7 @@ Feature: Create a visit
       | First       | Last        | 123 Street  | LA   | 5554443333 |
     Given the following pets exist for owner "Last":
       | name    | birth_date | type  |
-      | Sprigs  | 2022-03-03 | Cat   |
+      | Sprigs  | 2022-03-03 | cat   |
 
   Scenario: Create a valid visit for the pet of an owner (Normal flow)
     When a visit with description "A visit" and date "2022-03-10" is created for pet "Sprigs" of owner "Last"
