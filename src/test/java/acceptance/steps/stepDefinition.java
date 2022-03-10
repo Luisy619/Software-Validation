@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class stepDefinition extends AbstractStepsDefinition {
 
@@ -109,12 +110,18 @@ public class stepDefinition extends AbstractStepsDefinition {
 	public void theFollowingPetsExistForOwner(String ownerLastName, DataTable petTable) throws Exception {
 		List<Map<String, String>> pets = petTable.asMaps(String.class, String.class);
 
-		get(getOwnerLast(ownerLastName));
-		assertEquals(302, getLastStatusCode());
-		String url = Objects.requireNonNull(getLastGetResponse().getHeaders().getLocation()).toString();
-		assert url != null;
-		String idStr = url.substring(url.lastIndexOf('/') + 1);
-		// Last owner is set as owner ID for subsequent tests.
+		String ownerUrl = getOwnerLast(ownerLastName);
+		get(ownerUrl);
+		assertEquals(200, getLastStatusCode());
+
+		Pattern pattern = Pattern.compile("href=\"([0-9]+)/edit\"");
+		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
+
+		if (!matcher.find()) {
+			fail();
+		}
+
+		String idStr = matcher.group(1);
 		Integer ownerIDbyLast = Integer.parseInt(idStr);
 
 		for (Map<String, String> pet : pets) {
@@ -122,27 +129,34 @@ public class stepDefinition extends AbstractStepsDefinition {
 			post(createPetUrl, "");
 			assertEquals(302, getLastStatusCode());
 		}
+
 	}
 
 	private String getOwnerLast(String ownerLastName) {
-		return "/owners?lastName=" + ownerLastName;
+		return "http://localhost:8080/owners?lastName=" + ownerLastName;
 	}
 
 	private String createPetPost(Integer ownerID, String name, String birth_date, String type) {
-		return "/owners/" + ownerID.toString() + "/pets/new?" + "id=" + "&name=" + name + "&birthDate=" + birth_date
-				+ "&type=" + type;
+		return "http://localhost:8080/owners/" + ownerID.toString() + "/pets/new?" + "id=" + "&name=" + name
+				+ "&birthDate=" + birth_date + "&type=" + type;
 	}
 
 	@When("the following pet is added to the owner {string}:")
 	public void theFollowingPetIsAddedToTheOwner(String ownerLastName, DataTable petTable) throws Exception {
 		List<Map<String, String>> pets = petTable.asMaps(String.class, String.class);
 
-		get(getOwnerLast(ownerLastName));
-		assertEquals(302, getLastStatusCode());
-		String url = Objects.requireNonNull(getLastGetResponse().getHeaders().getLocation()).toString();
-		assert url != null;
-		String idStr = url.substring(url.lastIndexOf('/') + 1);
-		// Last owner is set as owner ID for subsequent tests.
+		String ownerUrl = getOwnerLast(ownerLastName);
+		get(ownerUrl);
+		assertEquals(200, getLastStatusCode());
+
+		Pattern pattern = Pattern.compile("href=\"([0-9]+)/edit\"");
+		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
+
+		if (!matcher.find()) {
+			fail();
+		}
+
+		String idStr = matcher.group(1);
 		Integer ownerIDbyLast = Integer.parseInt(idStr);
 
 		for (Map<String, String> pet : pets) {
@@ -186,7 +200,22 @@ public class stepDefinition extends AbstractStepsDefinition {
 	@When("a pet with name {string}, birthdate {string}, and type {string} is created for owner {string}")
 	public void aPetWithNameBirthdateAndTypeIsCreatedForOwner(String petName, String petDOB, String petType,
 			String ownerLastName) throws Exception {
-		assertPetExistsNTimes(ownerLastName, petName, petDOB, petType, 1);
+		String ownerUrl = getOwnerLast(ownerLastName);
+		get(ownerUrl);
+		assertEquals(200, getLastStatusCode());
+
+		Pattern pattern = Pattern.compile("href=\"([0-9]+)/edit\"");
+		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
+
+		if (!matcher.find()) {
+			fail();
+		}
+
+		String idStr = matcher.group(1);
+		Integer ownerIDbyLast = Integer.parseInt(idStr);
+
+		String createPetUrl = createPetPost(ownerIDbyLast, petName, petDOB, petType);
+		post(createPetUrl, "");
 	}
 
 	@And("a pet with name {string}, birthdate {string}, and type {string} will not exist for owner {string}")
