@@ -51,17 +51,6 @@ public class stepDefinition extends AbstractStepsDefinition {
 		post(createOwnerUrl, "");
 	}
 
-	private String createOwnerPost(Map<String, String> owner) {
-		return "http://localhost:8080/owners/new?" + "lastName=" + owner.get("last_name") + "&firstName="
-				+ owner.get("first_name") + "&address=" + owner.get("address") + "&city=" + owner.get("city")
-				+ "&telephone=" + owner.get("telephone");
-	}
-
-	private String createOwnerPost(String lastName, String firstName, String address, String city, String telephone) {
-		return "http://localhost:8080/owners/new?" + "lastName=" + lastName + "&firstName=" + firstName + "&address="
-				+ address + "&city=" + city + "&telephone=" + telephone;
-	}
-
 	@Then("the following owner will exist {int} time in the system:")
 	public void theFollowingOwnerWillExistTimeInTheSystem(int count, DataTable ownerTable) throws Exception {
 		Map<String, String> owner = ownerTable.asMaps(String.class, String.class).get(0);
@@ -74,36 +63,6 @@ public class stepDefinition extends AbstractStepsDefinition {
 			String city, String telephone) throws Exception {
 		String createOwnerUrl = createOwnerPost(firstName, lastName, address, city, telephone);
 		post(createOwnerUrl, "");
-	}
-
-	private void assertOwnerExistNTimes(String firstName, String lastName, String address, String city,
-			String telephone, int count) throws Exception {
-		Pattern pattern = Pattern.compile(
-				"<a href=\"/owners/([0-9]+)\">" + firstName + " " + lastName + "</a></a>\n" + "\\s*</td>\n" + "\\s*<td>"
-						+ address + "</td>\n" + "\\s*<td>" + city + "</td>\n" + "\\s*<td>" + telephone + "</td>");
-
-		// Fetch the owners page and assert no error.
-		String httpGetUrl = getOwnersGet();
-		get(httpGetUrl);
-		assertEquals(200, getLastStatusCode());
-
-		// Count the number of time the following user appears.
-		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
-		int match_count = 0;
-		while (matcher.find()) {
-			match_count++;
-		}
-		assertEquals(count, match_count);
-	}
-
-	private String getOwnersGet() {
-		return "http://localhost:8080/owners";
-	}
-
-	@And("an owner with name {string} {string}, address {string} {string}, and telephone {string} will not exist")
-	public void anOwnerWithNameAddressAndTelephoneWillNotExist(String firstName, String lastName, String address,
-			String city, String telephone) throws Exception {
-		assertOwnerExistNTimes(firstName, lastName, address, city, telephone, 0);
 	}
 
 	@Given("the following pets exist for owner {string}:")
@@ -130,15 +89,6 @@ public class stepDefinition extends AbstractStepsDefinition {
 			assertEquals(302, getLastStatusCode());
 		}
 
-	}
-
-	private String getOwnerLast(String ownerLastName) {
-		return "http://localhost:8080/owners?lastName=" + ownerLastName;
-	}
-
-	private String createPetPost(Integer ownerID, String name, String birth_date, String type) {
-		return "http://localhost:8080/owners/" + ownerID.toString() + "/pets/new?" + "id=" + "&name=" + name
-				+ "&birthDate=" + birth_date + "&type=" + type;
 	}
 
 	@When("the following pet is added to the owner {string}:")
@@ -175,26 +125,6 @@ public class stepDefinition extends AbstractStepsDefinition {
 	public void theFollowingPetWillNotExistForOwner(String ownerLastName, DataTable petTable) throws Exception {
 		Map<String, String> pet = petTable.asMaps(String.class, String.class).get(0);
 		assertPetExistsNTimes(ownerLastName, pet.get("name"), pet.get("birth_date"), pet.get("type"), 0);
-	}
-
-	private void assertPetExistsNTimes(String ownerLastName, String name, String birth_date, String type, int count)
-			throws Exception {
-		Pattern pattern = Pattern
-				.compile("<dt>Name</dt>\n" + "\\s*<dd>" + name + "</dd>\n" + "\\s*<dt>Birth Date</dt>\n" + "\\s*<dd>"
-						+ birth_date + "</dd>\n" + "\\s*<dt>Type</dt>\n" + "\\s*<dd>" + type + "</dd>");
-
-		// Fetch the owners page and assert no error.
-		String httpGetUrl = getOwnerLast(ownerLastName);
-		get(httpGetUrl);
-		assertEquals(200, getLastStatusCode());
-
-		// Count the number of time the pet appears.
-		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
-		int match_count = 0;
-		while (matcher.find()) {
-			match_count++;
-		}
-		assertEquals(count, match_count);
 	}
 
 	@When("a pet with name {string}, birthdate {string}, and type {string} is created for owner {string}")
@@ -276,6 +206,76 @@ public class stepDefinition extends AbstractStepsDefinition {
 			assertThat(getLastGetResponse().getBody(), not(containsString(visitDate)));
 		}
 		assertThat(getLastGetResponse().getBody(), containsString(petName));
+	}
+
+	private String createOwnerPost(Map<String, String> owner) {
+		return "http://localhost:8080/owners/new?" + "lastName=" + owner.get("last_name") + "&firstName="
+			+ owner.get("first_name") + "&address=" + owner.get("address") + "&city=" + owner.get("city")
+			+ "&telephone=" + owner.get("telephone");
+	}
+
+	private String createOwnerPost(String lastName, String firstName, String address, String city, String telephone) {
+		return "http://localhost:8080/owners/new?" + "lastName=" + lastName + "&firstName=" + firstName + "&address="
+			+ address + "&city=" + city + "&telephone=" + telephone;
+	}
+
+	private void assertOwnerExistNTimes(String firstName, String lastName, String address, String city,
+										String telephone, int count) throws Exception {
+		Pattern pattern = Pattern.compile(
+			"<a href=\"/owners/([0-9]+)\">" + firstName + " " + lastName + "</a></a>\n" + "\\s*</td>\n" + "\\s*<td>"
+				+ address + "</td>\n" + "\\s*<td>" + city + "</td>\n" + "\\s*<td>" + telephone + "</td>");
+
+		// Fetch the owners page and assert no error.
+		String httpGetUrl = getOwnersGet();
+		get(httpGetUrl);
+		assertEquals(200, getLastStatusCode());
+
+		// Count the number of time the following user appears.
+		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
+		int match_count = 0;
+		while (matcher.find()) {
+			match_count++;
+		}
+		assertEquals(count, match_count);
+	}
+
+	private String getOwnersGet() {
+		return "http://localhost:8080/owners";
+	}
+
+	@And("an owner with name {string} {string}, address {string} {string}, and telephone {string} will not exist")
+	public void anOwnerWithNameAddressAndTelephoneWillNotExist(String firstName, String lastName, String address,
+															   String city, String telephone) throws Exception {
+		assertOwnerExistNTimes(firstName, lastName, address, city, telephone, 0);
+	}
+
+	private String getOwnerLast(String ownerLastName) {
+		return "http://localhost:8080/owners?lastName=" + ownerLastName;
+	}
+
+	private String createPetPost(Integer ownerID, String name, String birth_date, String type) {
+		return "http://localhost:8080/owners/" + ownerID.toString() + "/pets/new?" + "id=" + "&name=" + name
+			+ "&birthDate=" + birth_date + "&type=" + type;
+	}
+
+	private void assertPetExistsNTimes(String ownerLastName, String name, String birth_date, String type, int count)
+		throws Exception {
+		Pattern pattern = Pattern
+			.compile("<dt>Name</dt>\n" + "\\s*<dd>" + name + "</dd>\n" + "\\s*<dt>Birth Date</dt>\n" + "\\s*<dd>"
+				+ birth_date + "</dd>\n" + "\\s*<dt>Type</dt>\n" + "\\s*<dd>" + type + "</dd>");
+
+		// Fetch the owners page and assert no error.
+		String httpGetUrl = getOwnerLast(ownerLastName);
+		get(httpGetUrl);
+		assertEquals(200, getLastStatusCode());
+
+		// Count the number of time the pet appears.
+		Matcher matcher = pattern.matcher(Objects.requireNonNull(getLastGetResponse().getBody()));
+		int match_count = 0;
+		while (matcher.find()) {
+			match_count++;
+		}
+		assertEquals(count, match_count);
 	}
 
 }
