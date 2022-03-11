@@ -22,7 +22,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 
 	Integer ownerID = 0;
 
-	@Then("the error {string} shall be raised")
+	@And("the error {string} shall be raised")
 	public void theErrorShallBeRaised(String errorMessage) {
 		assertThat(getLastPostResponse().getBody(), containsString(errorMessage));
 	}
@@ -65,9 +65,9 @@ public class stepDefinition extends AbstractStepsDefinition {
 		post(createOwnerUrl, "");
 	}
 
-	@And("an owner with name {string} {string}, address {string} {string}, and telephone {string} will not exist")
+	@Then("an owner with name {string} {string}, address {string} {string}, and telephone {string} will not exist")
 	public void anOwnerWithNameAddressAndTelephoneWillNotExist(String firstName, String lastName, String address,
-															   String city, String telephone) throws Exception {
+			String city, String telephone) throws Exception {
 		assertOwnerExistNTimes(firstName, lastName, address, city, telephone, 0);
 	}
 
@@ -135,7 +135,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 		assertPetExistsNTimes(ownerLastName, pet.get("name"), pet.get("birth_date"), pet.get("type"), 1);
 	}
 
-	@And("the following pet will not exist for owner {string}:")
+	@Then("the following pet will not exist for owner {string}:")
 	public void theFollowingPetWillNotExistForOwner(String ownerLastName, DataTable petTable) throws Exception {
 		Map<String, String> pet = petTable.asMaps(String.class, String.class).get(0);
 		assertPetExistsNTimes(ownerLastName, pet.get("name"), pet.get("birth_date"), pet.get("type"), 0);
@@ -166,7 +166,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 		post(createPetUrl, "");
 	}
 
-	@And("a pet with name {string}, birthdate {string}, and type {string} will not exist for owner {string}")
+	@Then("a pet with name {string}, birthdate {string}, and type {string} will not exist for owner {string}")
 	public void aPetWithNameBirthdateAndTypeWillNotExistForOwner(String petName, String petDOB, String petType,
 			String ownerLastName) throws Exception {
 		assertPetExistsNTimes(ownerLastName, petName, petDOB, petType, 0);
@@ -215,7 +215,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 		assertThat(getLastGetResponse().getBody(), containsString(petName));
 	}
 
-	@And("no visit with description {string} and date {string} will exist for pet {string} of owner {string}")
+	@Then("no visit with description {string} and date {string} will exist for pet {string} of owner {string}")
 	public void noVisitWillExistForPetOfOwner(String description, String visitDate, String petName,
 			String ownerLastName) throws Exception {
 		// Get the page of the owner.
@@ -237,8 +237,8 @@ public class stepDefinition extends AbstractStepsDefinition {
 	 */
 	private String createOwnerPost(Map<String, String> owner) {
 		return "http://localhost:8080/owners/new?" + "lastName=" + owner.get("last_name") + "&firstName="
-			+ owner.get("first_name") + "&address=" + owner.get("address") + "&city=" + owner.get("city")
-			+ "&telephone=" + owner.get("telephone");
+				+ owner.get("first_name") + "&address=" + owner.get("address") + "&city=" + owner.get("city")
+				+ "&telephone=" + owner.get("telephone");
 	}
 
 	/**
@@ -252,7 +252,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 	 */
 	private String createOwnerPost(String lastName, String firstName, String address, String city, String telephone) {
 		return "http://localhost:8080/owners/new?" + "lastName=" + lastName + "&firstName=" + firstName + "&address="
-			+ address + "&city=" + city + "&telephone=" + telephone;
+				+ address + "&city=" + city + "&telephone=" + telephone;
 	}
 
 	/**
@@ -266,10 +266,10 @@ public class stepDefinition extends AbstractStepsDefinition {
 	 * @throws Exception If get fails.
 	 */
 	private void assertOwnerExistNTimes(String firstName, String lastName, String address, String city,
-										String telephone, int count) throws Exception {
+			String telephone, int count) throws Exception {
 		Pattern pattern = Pattern.compile(
-			"<a href=\"/owners/(\\d+)\">" + firstName + " " + lastName + "</a></a>\n" + "\\s*</td>\n" + "\\s*<td>"
-				+ address + "</td>\n" + "\\s*<td>" + city + "</td>\n" + "\\s*<td>" + telephone + "</td>");
+				"<a href=\"/owners/(\\d+)\">" + firstName + " " + lastName + "</a></a>\n" + "\\s*</td>\n" + "\\s*<td>"
+						+ address + "</td>\n" + "\\s*<td>" + city + "</td>\n" + "\\s*<td>" + telephone + "</td>");
 
 		// Fetch the owners page and assert no error.
 		String httpGetUrl = getOwnersGet();
@@ -312,7 +312,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 	 */
 	private String createPetPost(Integer ownerID, String name, String birth_date, String type) {
 		return "http://localhost:8080/owners/" + ownerID.toString() + "/pets/new?" + "id=" + "&name=" + name
-			+ "&birthDate=" + birth_date + "&type=" + type;
+				+ "&birthDate=" + birth_date + "&type=" + type;
 	}
 
 	/**
@@ -325,11 +325,11 @@ public class stepDefinition extends AbstractStepsDefinition {
 	 * @throws Exception If the GET fails.
 	 */
 	private void assertPetExistsNTimes(String ownerLastName, String name, String birth_date, String type, int count)
-		throws Exception {
+			throws Exception {
 		// Try to match all instance of a given pet in the table.
 		Pattern pattern = Pattern
-			.compile("<dt>Name</dt>\n" + "\\s*<dd>" + name + "</dd>\n" + "\\s*<dt>Birth Date</dt>\n" + "\\s*<dd>"
-				+ birth_date + "</dd>\n" + "\\s*<dt>Type</dt>\n" + "\\s*<dd>" + type + "</dd>");
+				.compile("<dt>Name</dt>\n" + "\\s*<dd>" + name + "</dd>\n" + "\\s*<dt>Birth Date</dt>\n" + "\\s*<dd>"
+						+ birth_date + "</dd>\n" + "\\s*<dt>Type</dt>\n" + "\\s*<dd>" + type + "</dd>");
 
 		// Fetch the owners page and assert no error.
 		String httpGetUrl = getOwnerLast(ownerLastName);
