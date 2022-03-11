@@ -25,8 +25,8 @@ Feature: Create a pet owner
 
   Scenario Outline: Try to create an invalid owner with missing information (Error flow)
     When an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" is created
-    Then the error "<error_message>" shall be raised
-    And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
+    Then an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
+    And the error "<error_message>" shall be raised
 
     Examples:
       | first_name  | last_name   | address     | city | telephone  | error_message      |
@@ -38,10 +38,10 @@ Feature: Create a pet owner
 
   Scenario Outline: Try to create an invalid owner with an invalid phone number (Error flow)
     When an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" is created
-    Then the error "<error_message>" shall be raised
-    And an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
+    Then an owner with name "<first_name>" "<last_name>", address "<address>" "<city>", and telephone "<telephone>" will not exist
+    And the error "<error_message>" shall be raised
 
     Examples:
-      | first_name  | last_name   | address     | city | telephone    | error_message                     |
-      | NewFirst    | NewLast     | 123 Street  | LA   | 555444333    | Please enter a valid phone number |
-      | NewFirst    | NewLast     | 123 Street  | LA   | 55544433333  | Please enter a valid phone number |
+      | first_name  | last_name   | address     | city | telephone    | error_message               |
+      | NewFirst    | NewLast     | 123 Street  | LA   | 555444333    | numeric value out of bounds |
+      | NewFirst    | NewLast     | 123 Street  | LA   | 55544433333  | numeric value out of bounds |
