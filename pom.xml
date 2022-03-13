@@ -35,6 +35,8 @@
     <cucumber.version>7.2.3</cucumber.version>
     <cucumber-reporting.version>5.6.1</cucumber-reporting.version>
     <coverage-ratio>0.20</coverage-ratio>
+    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -167,6 +169,13 @@
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.7.2</version>
       <scope>test</scope>
     </dependency>
 
