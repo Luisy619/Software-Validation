@@ -250,7 +250,7 @@ public class stepDefinition extends AbstractStepsDefinition {
 	 * @param telephone Telephone string.
 	 * @return URL that can be used to POST an owner
 	 */
-	private String createOwnerPost(String lastName, String firstName, String address, String city, String telephone) {
+	private String createOwnerPost(String firstName, String lastName, String address, String city, String telephone) {
 		return "http://localhost:8080/owners/new?" + "lastName=" + lastName + "&firstName=" + firstName + "&address="
 				+ address + "&city=" + city + "&telephone=" + telephone;
 	}
@@ -268,8 +268,8 @@ public class stepDefinition extends AbstractStepsDefinition {
 	private void assertOwnerExistNTimes(String firstName, String lastName, String address, String city,
 			String telephone, int count) throws Exception {
 		Pattern pattern = Pattern.compile(
-				"<a href=\"/owners/(\\d+)\">" + firstName + " " + lastName + "</a></a>\n" + "\\s*</td>\n" + "\\s*<td>"
-						+ address + "</td>\n" + "\\s*<td>" + city + "</td>\n" + "\\s*<td>" + telephone + "</td>");
+				"<a href=\"/owners/(\\d+)\">" + firstName + " " + lastName + "</a></a>" + "\\s*</td>" + "\\s*<td>"
+						+ address + "</td>" + "\\s*<td>" + city + "</td>" + "\\s*<td>" + telephone + "</td>");
 
 		// Fetch the owners page and assert no error.
 		String httpGetUrl = getOwnersGet();
