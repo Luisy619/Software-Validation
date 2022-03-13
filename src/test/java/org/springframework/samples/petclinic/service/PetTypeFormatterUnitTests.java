@@ -18,7 +18,6 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-
 @ExtendWith(MockitoExtension.class)
 public class PetTypeFormatterUnitTests {
 
@@ -31,7 +30,6 @@ public class PetTypeFormatterUnitTests {
 	void instantiate() {
 		this.petTypeFormatter = new PetTypeFormatter(petRepo);
 	}
-
 
 	@Test
 	@DisplayName("Test print()")
@@ -68,4 +66,5 @@ public class PetTypeFormatterUnitTests {
 			petTypeFormatter.parse("Cat", Locale.ENGLISH);
 		});
 	}
+
 }

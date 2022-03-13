@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class ModelUnitTests {
+
 	@Test
 	@DisplayName("Test serialization()")
 	void Serialization() {
@@ -23,4 +24,5 @@ public class ModelUnitTests {
 		assertThat(other.getFirstName()).isEqualTo(person.getFirstName());
 		assertThat(other.getLastName()).isEqualTo(person.getLastName());
 	}
+
 }

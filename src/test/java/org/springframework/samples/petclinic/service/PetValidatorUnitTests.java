@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PetValidatorUnitTests {
 
 	private PetValidator petValidator;
+
 	private LocalDate birthDate;
 
 	@BeforeEach
@@ -28,7 +29,6 @@ public class PetValidatorUnitTests {
 		this.petValidator = new PetValidator();
 		this.birthDate = LocalDate.of(2022, 1, 1);
 	}
-
 
 	@Test
 	@DisplayName("Test validate() for when name is null")
@@ -88,4 +88,5 @@ public class PetValidatorUnitTests {
 		assertTrue(petValidator.supports(Pet.class));
 		assertFalse(petValidator.supports(Object.class));
 	}
+
 }
