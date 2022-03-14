@@ -142,7 +142,8 @@ public class OwnerControllerTests extends ControllerTestUtilities {
 		when(visitRepository.findByPetId(any())).thenReturn(createListOfVisits());
 		mockMvc.perform(get("/owners/{ownerId}", owner.getId())).andExpect(status().isOk())
 				.andExpect(view().name("owners/ownerDetails"));
-		verify(visitRepository, times(2)).findByPetId(any());
+		// findByPetId will get called once since there is only one pet in the petSet
+		verify(visitRepository, times(1)).findByPetId(any());
 	}
 
 }
